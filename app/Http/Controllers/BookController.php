@@ -16,12 +16,7 @@ class BookController extends Controller
     public function index()
     {
         // native select * from books;
-        $book = Book::get();
-        if($book && $book->count() >0){
-            return response(['message' => 'Show data success.','data'=> $book],200);
-        }else{
-            return response(['message'=> 'Data not found.','data'=> null],400);
-        }
+        return Book::get();
     }
 
     /**
@@ -43,14 +38,13 @@ class BookController extends Controller
     public function store(Request $request)
     {
         //native: insert into blabla
-        $book = Book::create([
+        return Book::create([
             "title" => $request->title,
             "description" => $request->description,
             "author" => $request->author,
             "publisher" => $request->publisher,
             "date_of_issue" => $request->date_of_issue
         ]);
-        return response(['message' => 'Create data success.','data'=> $book],201);
     }
 
     /**
@@ -61,12 +55,7 @@ class BookController extends Controller
      */
     public function show($id)
     {
-        $book = Book::find($id);
-        if($book && $book->count() >0){
-            return response(['message' => 'Show data success.','data'=> $book],200);
-        }else{
-            return response(['message'=> 'Data not found.','data'=> null],400);
-        }
+        return Book::find($id);
     }
 
     /**
@@ -90,20 +79,13 @@ class BookController extends Controller
     public function update(Request $request, $id)
     {
         //
-        $book Book::find($id)->update([
-            if($book){
-                $book->title = $request->title;
-                $book->description = $request->description;
-                $book->author = $request->author;
-                $book->publisher = $request->publisher;
-                $book->date_of_issue = $request->date_of_issue;
-
-                $book->save();
-                return response(['message' => 'Update data success.','data'=> $book],200);
-            }else{
-                return response(['message' => 'Update data failed.',null=> $book],406); 
-            }
-            
+        return Book::whereId($id)->update([
+            "title" => $request->title,
+            "description" => $request->description,
+            "author" => $request->author,
+            "publisher" => $request->publisher,
+            "date_of_issue" => $request->date_of_issue
+        ]);
     }
 
     /**
@@ -114,12 +96,6 @@ class BookController extends Controller
      */
     public function destroy($id)
     {
-        $book = Book::destroy($id);
-        if($book){
-            $book->delete();
-            return response([],204);
-        }else{
-            return response(['message'=> 'Remove data failed.','data'=> null],406);
-        }
+        return Book::destroy($id);
     }
 }
